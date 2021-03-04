@@ -1,0 +1,158 @@
+body {
+    text-align: center;
+    background-color: #383838;
+    color: white;
+}
+
+
+form {
+    height: 30vw;
+    margin-top: 100px;
+}
+
+a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+
+input {
+    width: 190px;
+    height: 30px;
+    background-color: grey;
+    color: white;
+}
+
+.left {
+    float: left;
+   
+}
+
+.right {
+    float: right;										
+
+}
+
+.bigLabel {
+    font-size: 20pt;
+}
+
+#uploadFile {
+	height: 20px;
+}
+
+#title { margin-top: 100px;
+}
+
+#fName_label {
+    margin-left: 180px;
+}
+#phone_label {
+    margin-left: 180px;
+}
+#month_label {
+    margin-left: 180px;
+}
+#city_label {
+    margin-left: 180px;
+}
+#college_label {
+    margin-left: 180px;
+}
+
+
+#fName {
+    margin-left: 50px;
+}
+
+#phone {
+    margin-left: 26px;
+}
+
+#month {
+    margin-left: 80px;
+}
+
+#city {
+    margin-left: 95px;
+}
+
+#college {
+    margin-left: 70px;
+}
+
+
+
+#lName_label {
+    margin-left: -210px;
+}
+#username_label {
+    margin-left: -210px;;
+}
+#day_label {
+    margin-left: -210px;
+}
+#state_label {
+    margin-left: -215px;;
+}
+
+#username {
+    margin-left: 7px;
+}
+#day {
+    margin-left: 43px;
+}
+#state {
+    margin-left: 38px;
+}
+
+
+#email_label {
+    margin-left: -323px;
+    margin-right: 323px;
+    
+}
+#password_label {
+    margin-left: -300px;
+    margin-right: 300px;
+    
+}
+#year_label {
+    margin-left: -331px;
+    margin-right: 331px;
+    
+}
+#zip_label {
+    margin-left: -336px;
+    margin-right: 336px;
+    
+}
+#highschool_label {
+    margin-left: -285px;
+    margin-right: 285px;
+    
+}
+
+
+
+#email {
+    margin-right: 45px;
+}
+#password {
+    margin-right: 20px;
+}
+#year {
+    margin-right: 50px;
+}
+#zip {
+    margin-right: 55px;
+}
+#highschool {
+    margin-right: 0 px;
+}
+
+#submit {
+    margin-top: 100px;
+    margin-left: 900px;
+    margin-right: -417px;
+}
