@@ -1,7 +1,8 @@
 package media;
 
 import java.io.InputStream;
-
+import java.util.Base64;
+import java.util.Base64.Decoder;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.awt.image.BufferedImage;
@@ -28,12 +29,12 @@ public class User {
 	private String highSchool;
 	private int followers;
 	
-	private InputStream picture;
+	private String picture;
 	
 	
 	
 	public User(int id, String fName, String lName, String email, long phone, String username, String password, int month, 
-			int day, int year, String city, String state, String zip, String college, String highSchool, int followers, boolean isPublic, InputStream picture) {
+			int day, int year, String city, String state, String zip, String college, String highSchool, int followers, boolean isPublic, String picture) {
 		
 		this.id = id;
 		this.isPublic = isPublic;
@@ -120,6 +121,12 @@ public class User {
 		return this.followers;
 	}
 	
+	public byte[] getBytes() {
+		Decoder decoder = Base64.getDecoder();
+		byte[] bytes = decoder.decode(this.picture);
+		return bytes;
+	}
+	
 	
 	public String getStatus() {
 		if(isPublic) {
@@ -128,27 +135,8 @@ public class User {
 		return "private";
 	}
 	
-	public InputStream getPicture() {
+	public String getPicture() {
 		return this.picture;
-	}
-	
-	public BufferedImage getImage() throws IOException {
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		 
-        byte[] buffer = new byte[1024];
-        int len;
- 
-        // read bytes from the input stream and store them in buffer
-        while ((len = this.picture.read(buffer)) != -1) {
-            // write bytes from the buffer into output stream
-            os.write(buffer, 0, len);
-        }
- 
-        byte[] ba = os.toByteArray();
-        ByteArrayInputStream bis = new ByteArrayInputStream(ba);
-        BufferedImage picture = ImageIO.read(bis);
-        ImageIO.write(picture, "jpg", new File("output.jpg") );
-        return picture;
 	}
 	
 	//set data methods
@@ -213,7 +201,7 @@ public class User {
 		this.followers = followers;
 	}
 	
-	public void setPicture(InputStream in) {
-		this.picture = in;
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 }

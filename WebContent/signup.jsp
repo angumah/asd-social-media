@@ -67,6 +67,6 @@
 
             <input value='signup' type='submit' id='submit'>
         </form>
-        <a href="${pageContext.request.contextPath}/login">Login</a>
+        <a id='loginButton' href="${pageContext.request.contextPath}/login">Login</a>
 	</body>
 </html>

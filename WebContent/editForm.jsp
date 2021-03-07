@@ -11,7 +11,8 @@
 </head>
 	<body>
 		<h1 id='title'>Edit</h1>
-		
+		<a id = href="${pageContext.request.contextPath}/back">Back</a>
+		<p>Last edited : <c:out value="${lastEdit}"></c:out> </p>
         <form action='update' method='post' enctype='multipart/form-data' id='updateForm'>
           <c:if test="${user != null }">
           	
@@ -70,7 +71,5 @@
             <input value='update' type='submit' id='submit'>
            </c:if> 
         </form>
- 
-        <a href="${pageContext.request.contextPath}/login">Login</a>
 	</body>
 </html>

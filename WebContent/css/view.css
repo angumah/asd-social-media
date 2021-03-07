@@ -1,0 +1,30 @@
+body {
+    background-color: #383838;
+    color: white;
+    text-align: center;
+}
+
+a{
+	color: white;
+	text-decoration: none;
+}
+
+img {
+	position: absolute;
+    border: solid black;
+    height: 100px;
+    width: 100px;
+    border-radius: 35px;
+    margin-top: -150px;
+    margin-left: -50px;
+}
+a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+#contentDiv {
+    margin-top: 20%;
+}
+
+

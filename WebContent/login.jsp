@@ -22,7 +22,7 @@
         <input type="submit" value='submit' id='submit' name='submit'>
     </form>
     
-    <a href="${pageContext.request.contextPath}/signup">Sign Up</a>
+    <a id='signUpButton' href="${pageContext.request.contextPath}/signup">Sign Up</a>
 
 </body>
 </html>

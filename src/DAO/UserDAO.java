@@ -6,12 +6,16 @@ import media.User;
 import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.Base64;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 
@@ -50,9 +54,9 @@ public class UserDAO {
 			String city = rs.getString("city");
 			String state = rs.getString("state");
 			String zip = rs.getString("zip");
-			String college = rs.getString("colege");
+			String college = rs.getString("college");
 			String highSchool = rs.getString("high_school");
-			InputStream picture = rs.getBinaryStream("picture");
+			byte[] picture = rs.getBytes("picture");
 			boolean isPublic;
 			if(rs.getString("status").equals("public")) {
 				isPublic = true;
@@ -60,14 +64,56 @@ public class UserDAO {
 				isPublic = false;
 			}
 			int followers = rs.getInt("followers");
-	
-			user = new User(id, fName, lName, email, phone, username, password, month, day, year, city, state, zip, college, highSchool, followers, isPublic, picture);
+			
+			String i = Base64.getEncoder().encodeToString(picture);
+			user = new User(id, fName, lName, email, phone, username, password, month, day, year, city, state, zip, college, highSchool, followers, isPublic, i);
 		}
 		rs.close();
 		pstmt.close();
 		conn.close();
 		return user;
 	}
+	
+	public Timestamp getLastlogin(int id) throws SQLException {
+		Timestamp lastLogin = null;
+		final String sql = "SELECT * FROM profiles WHERE user_id = ?";
+		
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setInt(1, id);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()) {
+			lastLogin = rs.getTimestamp("lastLog");
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return lastLogin;
+	}
+	
+	public Timestamp getLastEdit(int id) throws SQLException {
+		Timestamp lastEdit = null;
+		final String sql = "SELECT * FROM profiles WHERE user_id = ?";
+		
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setInt(1, id);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()) {
+			lastEdit = rs.getTimestamp("lastEdit");
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return lastEdit;
+	}
+	
 	
 	public User getUser(String username) throws SQLException {
 		User user = null;
@@ -95,7 +141,7 @@ public class UserDAO {
 			String zip = rs.getString("zip");
 			String college = rs.getString("college");
 			String highSchool = rs.getString("high_school");
-			InputStream picture = rs.getBinaryStream("picture");
+			byte[] picture = rs.getBytes("picture");
 			boolean isPublic;
 			if(rs.getString("status").equals("public")) {
 				isPublic = true;
@@ -103,8 +149,8 @@ public class UserDAO {
 				isPublic = false;
 			}
 			int followers = rs.getInt("followers");
-			
-			user = new User(id, fName, lName, email, phone, username, password, month, day, year, city, state, zip, college, highSchool, followers, isPublic, picture);
+			String i = Base64.getEncoder().encodeToString(picture);
+			user = new User(id, fName, lName, email, phone, username, password, month, day, year, city, state, zip, college, highSchool, followers, isPublic, i);
 		}
 		rs.close();
 		pstmt.close();
@@ -133,9 +179,9 @@ public class UserDAO {
 			String city = rs.getString("city");
 			String state = rs.getString("state");
 			String zip = rs.getString("zip");
-			String college = rs.getString("colege");
+			String college = rs.getString("college");
 			String highSchool = rs.getString("high_school");
-			InputStream picture = rs.getBinaryStream("picture");
+			byte[] picture = rs.getBytes("picture");
 			boolean isPublic;
 			if(rs.getString("status").equals("public")) {
 				isPublic = true;
@@ -143,8 +189,8 @@ public class UserDAO {
 				isPublic = false;
 			}
 			int followers = rs.getInt("followers");
-			
-			users.add(new User(id, fName, lName, email, phone, username, password, month, day, year, city, state, zip, college, highSchool, followers, isPublic, picture));
+			String i = Base64.getEncoder().encodeToString(picture);
+			users.add(new User(id, fName, lName, email, phone, username, password, month, day, year, city, state, zip, college, highSchool, followers, isPublic, i));
 		}
 		rs.close();
 		stmt.close();
@@ -154,7 +200,7 @@ public class UserDAO {
 	}
 	
 	public boolean insertUser(String fName, String lName, String email, long phone, String username, String password, int month, 
-			int day, int year, String city, String state, String zip, String college, String highSchool, InputStream picture) throws SQLException {
+			int day, int year, String city, String state, String zip, String college, String highSchool, byte[] picture) throws SQLException {
 		
 		final String sql = "INSERT INTO profiles (fName, lName, email, phone_number, username, password, month, day, year, city, state, zip, college, high_school, followers, status, picture) " +
 							"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -178,7 +224,7 @@ public class UserDAO {
 		pstmt.setString(14, highSchool);
 		pstmt.setInt(15, 0);
 		pstmt.setString(16, "public");
-		pstmt.setBlob(17, picture);
+		pstmt.setBytes(17, picture);
 		
 		int affected = pstmt.executeUpdate();
 		pstmt.close();
@@ -188,7 +234,7 @@ public class UserDAO {
 	}
 	
 	public boolean updateUser(User user) throws SQLException{
-		final String sql = "UPDATE profiles SET fName = ?, lName = ?, email = ?, phone_number = ?, username = ?, password = ?, month = ?, day = ?, year = ?, city = ?, state = ?, zip = ?, college = ?, high_school = ?, followers = ?, status = ?, picture = ? "
+		final String sql = "UPDATE profiles SET fName = ?, lName = ?, email = ?, phone_number = ?, username = ?, password = ?, month = ?, day = ?, year = ?, city = ?, state = ?, zip = ?, college = ?, high_school = ?, followers = ?, status = ? "
 				+ "WHERE user_id = ?";
 		
 		Connection conn = getConnection();
@@ -210,8 +256,7 @@ public class UserDAO {
 		pstmt.setString(14, user.getHighSchool());
 		pstmt.setInt(15, user.getFollowers());
 		pstmt.setString(16, user.getStatus());
-		pstmt.setBlob(17, user.getPicture());
-		pstmt.setInt(18, user.getId());
+		pstmt.setInt(17, user.getId());
 		int affected = pstmt.executeUpdate();
 		
 		pstmt.close();
@@ -220,6 +265,58 @@ public class UserDAO {
 		return affected == 1;
 		
 	}
+	
+	public boolean updatePicture(User user) throws SQLException{
+		final String sql = "UPDATE profiles SET picture = ? " +
+							"WHERE user_id= ?";
+		
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setBytes(1, user.getBytes());
+		pstmt.setInt(2, user.getId());
+		
+		int affected = pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+		
+		return affected == 1;
+	}
+	
+	public boolean updateLogin(User user, Timestamp login) throws SQLException{
+		final String sql = "UPDATE profiles SET lastLog = ? " +
+							"WHERE user_id= ?";
+		
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setTimestamp(1, login);
+		pstmt.setInt(2, user.getId());
+		
+		int affected = pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+		
+		return affected == 1;
+	}
+	
+	public boolean updateEdit(User user, Timestamp edit) throws SQLException{
+		final String sql = "UPDATE profiles SET lastEdit = ? " +
+							"WHERE user_id= ?";
+		
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setTimestamp(1, edit);
+		pstmt.setInt(2, user.getId());
+		
+		int affected = pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+		
+		return affected == 1;
+	}
+	
 	
 	public boolean deleteUser(User user) throws SQLException{
 		final String sql = "DELETE FROM profiles WHERE user_id = ?";

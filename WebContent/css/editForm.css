@@ -10,6 +10,10 @@ form {
     margin-top: 100px;
 }
 
+a {
+	color: white;
+	text-decoration: none;
+}
 a:visited {
 	color: white;
 	text-decoration: none;

@@ -41,6 +41,13 @@ text-align: center;
 font-size: 18pt;
 }
 
+
+#signUpButton{
+	position: absolute;
+	margin-top: -450px;
+	margin-left: 85%;
+}
+
 #submit {
     width: 100px;
     height: 20px;

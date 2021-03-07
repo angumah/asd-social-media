@@ -1,0 +1,36 @@
+body {
+    background-color: #383838;
+    color: white;
+    text-align: center;
+}
+
+td {
+	text-align: left;
+}
+
+td{
+	padding-right: 40px;
+}
+
+table {
+	height: 100%;
+	width: 100%;
+}
+
+a{
+	color: white;
+	text-decoration: none;
+}
+
+img {
+	height: 50px;
+	width: 50px;
+}
+a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+#edit{
+	margin-left: 300px;
+}
